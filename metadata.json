@@ -1,0 +1,6 @@
+{
+  "name": "تێشتا دادی - Têşta Dadê",
+  "description": "مینیۆیا دیجیتاڵی یا تایبەت ب تێشتا دادی ب زمانێن بادینی، سۆرانی، عەرەبی و ئینگلیزی دگەل شێوازێ تاریک و ڕووناهی",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

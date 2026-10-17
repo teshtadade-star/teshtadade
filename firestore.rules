@@ -1,0 +1,58 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidDish(data) {
+      return data.keys().hasAll(['id', 'name', 'price', 'desc', 'cat']) &&
+             data.keys().hasOnly(['id', 'name', 'price', 'desc', 'cat', 'img', 'isPopular', 'available', 'isPinned', 'order']) &&
+             data.id is number &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.price is string && data.price.size() > 0 && data.price.size() <= 50 &&
+             data.desc is string && data.desc.size() <= 500 &&
+             data.cat is string && data.cat.size() <= 30 &&
+             (!('img' in data) || (data.img is string && data.img.size() <= 600000)) &&
+             (!('isPopular' in data) || data.isPopular is bool) &&
+             (!('available' in data) || data.available is bool) &&
+             (!('isPinned' in data) || data.isPinned is bool) &&
+             (!('order' in data) || data.order is number);
+    }
+
+    function isValidSettings(data) {
+      return (!('brandName' in data) || (data.brandName is string && data.brandName.size() <= 100)) &&
+             (!('subtitle' in data) || (data.subtitle is string && data.subtitle.size() <= 200)) &&
+             (!('restaurantPhone' in data) || (data.restaurantPhone is string && data.restaurantPhone.size() <= 50)) &&
+             (!('whatsappPhone' in data) || (data.whatsappPhone is string && data.whatsappPhone.size() <= 50)) &&
+             (!('isOpen' in data) || data.isOpen is bool) &&
+             (!('announcement' in data) || (data.announcement is string && data.announcement.size() <= 300)) &&
+             (!('showAnnouncement' in data) || data.showAnnouncement is bool) &&
+             (!('categoriesState' in data) || data.categoriesState is map) &&
+             (!('adminPasswordHash' in data) || (data.adminPasswordHash is string && data.adminPasswordHash.size() <= 128)) &&
+             (!('adminPasswordSalt' in data) || (data.adminPasswordSalt is string && data.adminPasswordSalt.size() <= 64)) &&
+             (!('homepageSections' in data) || data.homepageSections is map);
+    }
+
+    // Dishes collection: Public can view the menu items. Writes require valid schema.
+    match /dishes/{dishId} {
+      allow read: if true;
+      allow create, update: if isValidId(dishId) && isValidDish(request.resource.data);
+      allow delete: if isValidId(dishId);
+    }
+
+    // Settings collection: Public can view app settings. Writes require valid schema.
+    match /settings/{settingId} {
+      allow read: if true;
+      allow create, update: if isValidId(settingId) && isValidSettings(request.resource.data);
+      allow delete: if false;
+    }
+  }
+}

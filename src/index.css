@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary-color: #9E121E;
+    --primary-hover: #7C0A11;
+    --accent-color: #DCAE5B;
+    --accent-light: #F4E8D1;
+    --bg-app: #FAF4F4;
+    --card-bg: #FFFFFF;
+    --text-dark: #1A1213;
+    --text-light: #5A4E50;
+    --border-accent: rgba(158, 18, 30, 0.12);
+    --categories-bg: #FFFFFF;
+    --tab-bg: #F5EAEB;
+    --tab-border: rgba(158, 18, 30, 0.15);
+  }
+
+  .dark {
+    --primary-color: #C1121C;
+    --primary-hover: #A00E17;
+    --accent-color: #E6BC73;
+    --accent-light: #382F1E;
+    --bg-app: #0D1210;
+    --card-bg: #151D1A;
+    --text-dark: #FFFFFF;
+    --text-light: #B4C4BD;
+    --border-accent: rgba(230, 188, 115, 0.2);
+    --categories-bg: #151D1A;
+    --tab-bg: #212C28;
+    --tab-border: rgba(230, 188, 115, 0.15);
+  }
+
+  body {
+    font-family: 'Zain', 'Cairo', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-dark);
+    letter-spacing: normal;
+    font-variant-ligatures: common-ligatures;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Hide scrollbar for category list */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
